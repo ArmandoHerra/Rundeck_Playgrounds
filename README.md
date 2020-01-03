@@ -3,7 +3,7 @@ A repository that contains the IaC Code to Configure and Deploy an AWS AMI that 
 
 ## Important
 
-First verify you have both Terraform and Packer installed before running the project.
+First verify you have both Terraform, Packer and the AWS CLI installed before running the project.
 
 ---
 - `packer --version`
