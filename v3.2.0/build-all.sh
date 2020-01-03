@@ -8,4 +8,4 @@ cd ./terraform
 terraform fmt
 terraform validate
 terraform apply -auto-approve
-terraform output RunDeckv3_IP
+terraform output Rundeckv3_IP

@@ -35,6 +35,26 @@
         {
             "script": "packer/scripts/bash/install-base.sh",
             "type": "shell"
+        },
+        {
+            "script": "packer/scripts/bash/install-java.sh",
+            "type": "shell"
+        },
+        {
+            "script": "packer/scripts/bash/install-docker.sh",
+            "type": "shell"
+        },
+        {
+            "script": "packer/scripts/bash/install-gradle.sh",
+            "type": "shell"
+        },
+        {
+            "script": "packer/scripts/bash/install-grails.sh",
+            "type": "shell"
+        },
+        {
+            "script": "packer/scripts/bash/install-rundeck.sh",
+            "type": "shell"
         }
     ]
 }

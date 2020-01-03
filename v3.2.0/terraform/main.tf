@@ -11,30 +11,45 @@ data "aws_vpc" "default" {
   default = true
 }
 
-resource "aws_instance" "RunDeckv3" {
+resource "aws_instance" "Rundeckv3" {
   ami                         = var.packer_built_rundeckv3_ami
   associate_public_ip_address = true
-  instance_type               = "t3.small"
+  instance_type               = "t3.medium"
 
   key_name = "RunDeck-Playgrounds"
   vpc_security_group_ids = [
     aws_security_group.HTTP_SG.id,
     aws_security_group.SSH_SG.id,
-    aws_security_group.RunDeck_SG.id
+    aws_security_group.Rundeck_SG.id
   ]
 
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo systemctl start docker
+              cd docker-zoo/cloud/
+              sudo docker-compose build
+              sudo docker-compose up
+              EOF
+
   tags = {
-    Name = "RunDeck Playgrounds"
+    Name = "Rundeck Playgrounds"
   }
 }
 
-resource "aws_security_group" "RunDeck_SG" {
-  name = "RunDeck Security Group"
+resource "aws_security_group" "Rundeck_SG" {
+  name = "Rundeck Security Group"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = 4440
     to_port     = 4440
+    protocol    = "tcp"
+  }
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
   }
 

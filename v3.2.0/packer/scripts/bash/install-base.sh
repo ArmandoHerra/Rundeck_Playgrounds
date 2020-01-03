@@ -7,5 +7,5 @@ set -e
 sudo yum update -y
 sudo yum install epel-release -y
 
-# Install 'curl', 'wget' and 'vim'
-sudo yum install curl wget vim -y
+# Install 'unzip', 'curl', 'wget', 'git', and 'vim'
+sudo yum install unzip curl wget git vim -y
