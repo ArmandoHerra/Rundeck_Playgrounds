@@ -3,22 +3,16 @@
 # -e  Exit immediately if a command exits with a non-zero status.
 set -e
 
-git clone https://github.com/rundeck/docker-zoo.git
-cd docker-zoo/cloud
+export RDECK_BASE=~/rundeck;
+sudo mkdir -p $RDECK_BASE
 
-mkdir libext
-cd libext
-wget https://github.com/rundeck-plugins/rundeck-s3-log-plugin/releases/download/v1.0.5/rundeck-s3-log-plugin-1.0.5.jar
+wget https://dl.bintray.com/rundeck/rundeck-maven/rundeck-3.2.0-20191218.war -P /tmp
+sudo mv /tmp/rundeck-3.2.0-20191218.war $RDECK_BASE
 
-cd ..
+cd $RDECK_BASE
+sudo chown root:root rundeck-3.2.0-20191218.war
+ls -la
 
-cat >> .env <<EOL
-## Set pro options if applicable
-# RUNDECK_IMAGE=rundeckpro/team:SNAPSHOT
-# RUNDECK_LICENSE_FILE=
-
-AWS_CREDENTIALS=
-RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_BUCKET=
-RUNDECK_PLUGIN_EXECUTIONFILESTORAGE_S3_REGION=
-RUNDECK_STORAGE_PASSWORD=admin
-EOL
+java -Xmx1g -jar rundeck-3.2.0-20191218.war
+PATH=$PATH:$RDECK_BASE/tools/bin
+MANPATH=$MANPATH:$RDECK_BASE/docs/man

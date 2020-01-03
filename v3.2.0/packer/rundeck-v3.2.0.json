@@ -2,7 +2,7 @@
     "builders": [
         {
             "ami_name": "Rundeck-v3.2.0-{{isotime | clean_resource_name}}",
-            "instance_type": "t2.micro",
+            "instance_type": "t2.medium",
             "region": "us-east-1",
             "source_ami_filter": {
                 "filters": {
@@ -38,10 +38,6 @@
         },
         {
             "script": "packer/scripts/bash/install-java.sh",
-            "type": "shell"
-        },
-        {
-            "script": "packer/scripts/bash/install-docker.sh",
             "type": "shell"
         },
         {

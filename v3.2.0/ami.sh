@@ -52,6 +52,7 @@ function build_rundeckv3_ami () {
     if [[ $rundeckv3_Valid == "Template validated successfully." ]]; then
         echo -e "Rundeckv3 Template validated successfully"
         echo -e "\nBuilding Rundeckv3 AMI...\n"
+        mkdir packer/logs
         packer build -color=false packer/rundeck-v3.2.0.json | tee packer/logs/rundeckv3_ami_output.log
         rundeckv3PreExportVar=$(cat packer/logs/rundeckv3_ami_output.log | tail -n 2 \
             | sed '$ d' \
@@ -74,4 +75,4 @@ function build_rundeckv3_ami () {
 
 clean_ami
 clean_snapshot
-# build_rundeckv3_ami
+build_rundeckv3_ami

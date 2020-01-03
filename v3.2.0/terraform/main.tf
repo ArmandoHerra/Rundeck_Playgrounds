@@ -14,7 +14,7 @@ data "aws_vpc" "default" {
 resource "aws_instance" "Rundeckv3" {
   ami                         = var.packer_built_rundeckv3_ami
   associate_public_ip_address = true
-  instance_type               = "t3.medium"
+  instance_type               = "m3.medium"
 
   key_name = "RunDeck-Playgrounds"
   vpc_security_group_ids = [
@@ -25,10 +25,8 @@ resource "aws_instance" "Rundeckv3" {
 
   user_data = <<-EOF
               #!/bin/bash
-              sudo systemctl start docker
-              cd docker-zoo/cloud/
-              sudo docker-compose build
-              sudo docker-compose up
+              /etc/init.d/rundeckd start
+              $RDECK_BASE/server/sbin/rundeckd start
               EOF
 
   tags = {
