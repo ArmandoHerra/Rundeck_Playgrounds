@@ -30,8 +30,8 @@ function clean_snapshot () {
     echo -e "~~~~~ Removing previous AMI Snapshot ~~~~~\n"
 
     # Lookup the AMI Snapshot
-    aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.0" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1 --profile ah
-    if [ $? -eq 0 ]; then
+    SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.0" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1 --profile ah)
+    if [ $SnapshotExists != [] ]; then
         snapID=$(aws ec2 describe-snapshots \
             --filters "Name=tag:Project,Values=Rundeck v3.2.0" \
             --query "Snapshots[*].{ID:SnapshotId}" \
@@ -46,27 +46,30 @@ function clean_snapshot () {
 }
 
 function build_rundeckv3_ami () {
-    echo -e "\n ~~~~~ Validating Rundeckv3 Packer Template ~~~~~ \n"
+    echo -e "~~~~~ Validating Rundeckv3 Packer Template ~~~~~ \n"
     rundeckv3_Valid=$(packer validate packer/rundeck-v3.2.0.json)
     
     if [[ $rundeckv3_Valid == "Template validated successfully." ]]; then
         echo -e "Rundeckv3 Template validated successfully"
         echo -e "\nBuilding Rundeckv3 AMI...\n"
-        mkdir packer/logs
-        packer build -color=false packer/rundeck-v3.2.0.json | tee packer/logs/rundeckv3_ami_output.log
-        rundeckv3PreExportVar=$(cat packer/logs/rundeckv3_ami_output.log | tail -n 2 \
-            | sed '$ d' \
-            | sed "s/us-east-1: /variable "\"packer_built_rundeckv3_ami"\" { default = \"/" \
-        | sed -e 's/[[:space:]]*$/\"/')
-        rundeckv3ExportVar="${rundeckv3PreExportVar} }"
-        echo $rundeckv3ExportVar >> terraform/variables.tf
-        # Print last two lines of the build logs | Match all cases for 'ami-*' | get the 2md column of the line using a space as delimiter.
-        RUNDECKV3_AMI_ID=$(tail -2 packer/logs/rundeckv3_ami_output.log | grep 'ami-[a0-z9]*' | cut -d " " -f 2)
-        if [[ $RUNDECKV3_AMI_ID == "" ]]; then
-            echo -e "Errors occurred while building the Rundeckv3 Packer Image, please check the logs."
+        if [ ! -d "packer/logs" ]; then
+            mkdir packer/logs
         else
-            echo $RUNDECKV3_AMI_ID > packer/logs/RUNDECKV3_AMI_ID.log
-            echo
+            packer build -color=false packer/rundeck-v3.2.0.json | tee packer/logs/rundeckv3_ami_output.log
+            rundeckv3PreExportVar=$(cat packer/logs/rundeckv3_ami_output.log | tail -n 2 \
+                | sed '$ d' \
+                | sed "s/us-east-1: /variable "\"packer_built_rundeckv3_ami"\" { default = \"/" \
+            | sed -e 's/[[:space:]]*$/\"/')
+            rundeckv3ExportVar="${rundeckv3PreExportVar} }"
+            echo $rundeckv3ExportVar >> terraform/variables.tf
+            # Print last two lines of the build logs | Match all cases for 'ami-*' | get the 2md column of the line using a space as delimiter.
+            RUNDECKV3_AMI_ID=$(tail -2 packer/logs/rundeckv3_ami_output.log | grep 'ami-[a0-z9]*' | cut -d " " -f 2)
+            if [[ $RUNDECKV3_AMI_ID == "" ]]; then
+                echo -e "Errors occurred while building the Rundeckv3 Packer Image, please check the logs."
+            else
+                echo $RUNDECKV3_AMI_ID > packer/logs/RUNDECKV3_AMI_ID.log
+                echo
+            fi
         fi
     else
         echo -e "Rundeckv3 Packer Template is not valid!"
