@@ -11,10 +11,22 @@ First verify you have both Terraform and Packer installed before running the pro
 - If you don't have Packer installed, please go to [https://www.packer.io/downloads.html](https://www.packer.io/downloads.html)
   
 ---
-
 - `terraform --version`
 - Should return the binary's version like such: `Terraform v0.12.16`
 - If you don't have Terraform installed, please go to [https://www.terraform.io/downloads.html](https://www.terraform.io/downloads.html)
+---
+- `aws`
+- Should return the following output:
+```
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+aws: error: the following arguments are required: command
+```
+- If you don't see it, you don't have the `awscli` installed, please go to [https://aws.amazon.com/cli/](https://aws.amazon.com/cli/) and install the CLI.
 ---
 
 ### Bootstrap Project
