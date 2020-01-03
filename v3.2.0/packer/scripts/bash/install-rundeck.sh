@@ -13,6 +13,6 @@ cd $RDECK_BASE
 sudo chown root:root rundeck-3.2.0-20191218.war
 ls -la
 
-java -Xmx1g -jar rundeck-3.2.0-20191218.war
+java -Xmx4g -jar rundeck-3.2.0-20191218.war -d
 PATH=$PATH:$RDECK_BASE/tools/bin
 MANPATH=$MANPATH:$RDECK_BASE/docs/man
