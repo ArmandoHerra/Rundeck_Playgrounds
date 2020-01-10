@@ -24,6 +24,7 @@ resource "aws_instance" "Rundeckv3" {
   ]
 
   ebs_block_device {
+    device_name           = "/dev/xvda"
     delete_on_termination = true
     volume_size           = 100
     volume_type           = "gp2"
@@ -31,8 +32,7 @@ resource "aws_instance" "Rundeckv3" {
 
   user_data = <<-EOF
               #!/bin/bash
-              /etc/init.d/rundeckd start
-              $RDECK_BASE/server/sbin/rundeckd start
+              sudo service rundeckd start
               EOF
 
   tags = {
