@@ -2,7 +2,7 @@
     "builders": [
         {
             "ami_name": "Rundeck-v3.2.0-{{isotime | clean_resource_name}}",
-            "instance_type": "t2.medium",
+            "instance_type": "m4.large",
             "region": "us-east-1",
             "source_ami_filter": {
                 "filters": {
@@ -22,7 +22,15 @@
                 "Project": "Rundeck v3.2.0",
                 "Release": "Latest"
             },
-            "type": "amazon-ebs"
+            "type": "amazon-ebs",
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_size": 100,
+                    "volume_type": "gp2",
+                    "delete_on_termination": true
+                }
+            ]
         }
     ],
     "provisioners": [

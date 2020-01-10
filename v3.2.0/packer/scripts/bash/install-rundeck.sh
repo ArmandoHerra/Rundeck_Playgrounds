@@ -3,6 +3,8 @@
 # -e  Exit immediately if a command exits with a non-zero status.
 set -e
 
+echo $JAVA_HOME
+
 export RDECK_BASE=~/rundeck;
 sudo mkdir -p $RDECK_BASE
 
@@ -13,6 +15,9 @@ cd $RDECK_BASE
 sudo chown root:root rundeck-3.2.0-20191218.war
 ls -la
 
-java -Xmx4g -jar rundeck-3.2.0-20191218.war -d
+server_addr=$(curl -v http://169.254.169.254/latest/meta-data/public-ipv4)
+
+java -server -Dserver.session.timeout=3600 -Dserver.port=4440 -Dserver.address=$server_addr -jar rundeck-3.2.0-20191218.war
+
 PATH=$PATH:$RDECK_BASE/tools/bin
 MANPATH=$MANPATH:$RDECK_BASE/docs/man

@@ -14,7 +14,7 @@ data "aws_vpc" "default" {
 resource "aws_instance" "Rundeckv3" {
   ami                         = var.packer_built_rundeckv3_ami
   associate_public_ip_address = true
-  instance_type               = "m3.medium"
+  instance_type               = "m4.xlarge"
 
   key_name = "RunDeck-Playgrounds"
   vpc_security_group_ids = [
@@ -22,6 +22,12 @@ resource "aws_instance" "Rundeckv3" {
     aws_security_group.SSH_SG.id,
     aws_security_group.Rundeck_SG.id
   ]
+
+  ebs_block_device {
+    delete_on_termination = true
+    volume_size           = 100
+    volume_type           = "gp2"
+  }
 
   user_data = <<-EOF
               #!/bin/bash

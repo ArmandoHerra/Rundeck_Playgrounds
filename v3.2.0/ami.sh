@@ -30,7 +30,7 @@ function clean_snapshot () {
     echo -e "~~~~~ Removing previous AMI Snapshot ~~~~~\n"
 
     # Lookup the AMI Snapshot
-    SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.0" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1 --profile ah)
+    SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.0" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1)
     if [ $SnapshotExists != [] ]; then
         snapID=$(aws ec2 describe-snapshots \
             --filters "Name=tag:Project,Values=Rundeck v3.2.0" \
