@@ -14,7 +14,7 @@ data "aws_vpc" "default" {
 resource "aws_instance" "Rundeckv3" {
   ami                         = var.packer_built_rundeckv3_ami
   associate_public_ip_address = true
-  instance_type               = "m4.xlarge"
+  instance_type               = "m4.large"
 
   key_name = "RunDeck-Playgrounds"
   vpc_security_group_ids = [
@@ -33,10 +33,14 @@ resource "aws_instance" "Rundeckv3" {
   user_data = <<-EOF
               #!/bin/bash
               sudo service rundeckd start
+              server_addr=$(curl -v http://169.254.169.254/latest/meta-data/public-ipv4)
+              sudo sed -i "s/localhost/$server_addr/g" /etc/rundeck/framework.properties
+              sudo sed -i "s/localhost/$server_addr/g" /etc/rundeck/rundeck-config.properties
+              sudo service rundeckd restart
               EOF
 
   tags = {
-    Name = "Rundeck Playgrounds"
+    Name = "Rundeck Playground v3.2.0"
   }
 }
 
