@@ -117,11 +117,27 @@ resource "aws_security_group" "SSH_SG_v1" {
   }
 }
 
-resource "aws_iam_role" "AssumeRole" {
-  name = "AssumeRole"
+data "aws_iam_policy_document" "instance-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
 
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "instance" {
+  name               = "instance_role"
+  path               = "/system/"
+  assume_role_policy = "${data.aws_iam_policy_document.instance-assume-role-policy.json}"
+}
+
+resource "aws_iam_role" "AssumeRole" {
+  name               = "AssumeRole"
   assume_role_policy = <<EOF
-  {
+{
     "Version": "2012-10-17",
     "Statement": [
       {
@@ -143,9 +159,8 @@ resource "aws_iam_instance_profile" "SSM_Profile" {
 }
 
 resource "aws_iam_role_policy" "SSM_Policy" {
-  name = "SSM_Policy"
-  role = aws_iam_role.AssumeRole.id
-
+  name   = "SSM_Policy"
+  role   = aws_iam_role.AssumeRole.id
   policy = <<EOF
 {
     "Version": "2012-10-17",

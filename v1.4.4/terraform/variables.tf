@@ -1,1 +1,1 @@
-variable "packer_built_rundeckv1_ami" { default = "ami-055193429f4394994" }
+variable "packer_built_rundeckv1_ami" { default = "ami-01f6753dbdd76f024" }
