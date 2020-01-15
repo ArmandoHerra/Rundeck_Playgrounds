@@ -17,7 +17,10 @@ instance_id=$(aws ec2 describe-instances \
 	| grep "i-[a0-z9]*" \
 	| cut -d "\"" -f 4)
 
-# Set fix here
+# Set fix on the following CLI command, configure the instance with the appropriate role and permissions to be able to use SSM and Send a remote command.
+
+# Reminder: Install the SSM Agent on the instance first, preferably on the install-base.sh script.
+
 aws ssm send-command \
     --instance-ids "i-0102edf6ab3975c62" \
     --document-name "AWS-RunShellScript" \

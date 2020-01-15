@@ -16,4 +16,5 @@ mkdir -p $RDECK_BASE
 
 cp rundeck-launcher-1.4.4.jar $RDECK_BASE
 
+# Send the following command via SSM Send Command
 # cd $RDECK_BASE && java -jar rundeck-launcher-1.4.4.jar &
