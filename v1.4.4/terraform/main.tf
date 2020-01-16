@@ -43,7 +43,7 @@ resource "aws_instance" "Rundeckv1" {
 }
 
 resource "aws_security_group" "Rundeck_SG_v1" {
-  name = "Rundeck Security Group"
+  name = "Rundeck Security Group v1"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -68,7 +68,7 @@ resource "aws_security_group" "Rundeck_SG_v1" {
 }
 
 resource "aws_security_group" "HTTP_SG_v1" {
-  name = "HTTP Security Group"
+  name = "HTTP Security Group v1"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -100,7 +100,7 @@ resource "aws_security_group" "HTTP_SG_v1" {
 }
 
 resource "aws_security_group" "SSH_SG_v1" {
-  name = "SSH Security Group"
+  name = "SSH Security Group v1"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -131,7 +131,7 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 resource "aws_iam_role" "instance" {
   name               = "instance_role"
   path               = "/system/"
-  assume_role_policy = "${data.aws_iam_policy_document.instance-assume-role-policy.json}"
+  assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
 }
 
 resource "aws_iam_role" "AssumeRole" {

@@ -18,9 +18,9 @@ resource "aws_instance" "Rundeckv3" {
 
   key_name = "RunDeck-Playgrounds"
   vpc_security_group_ids = [
-    aws_security_group.HTTP_SG.id,
-    aws_security_group.SSH_SG.id,
-    aws_security_group.Rundeck_SG.id
+    aws_security_group.HTTP_SG_v3.id,
+    aws_security_group.SSH_SG_v3.id,
+    aws_security_group.Rundeck_SG_v3.id
   ]
 
   ebs_block_device {
@@ -44,8 +44,8 @@ resource "aws_instance" "Rundeckv3" {
   }
 }
 
-resource "aws_security_group" "Rundeck_SG" {
-  name = "Rundeck Security Group"
+resource "aws_security_group" "Rundeck_SG_v3" {
+  name = "Rundeck Security Group v3"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -69,8 +69,8 @@ resource "aws_security_group" "Rundeck_SG" {
   }
 }
 
-resource "aws_security_group" "HTTP_SG" {
-  name = "HTTP Security Group"
+resource "aws_security_group" "HTTP_SG_v3" {
+  name = "HTTP Security Group v3"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -101,8 +101,8 @@ resource "aws_security_group" "HTTP_SG" {
   }
 }
 
-resource "aws_security_group" "SSH_SG" {
-  name = "SSH Security Group"
+resource "aws_security_group" "SSH_SG_v3" {
+  name = "SSH Security Group v3"
 
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
