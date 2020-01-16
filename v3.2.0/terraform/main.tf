@@ -16,7 +16,7 @@ resource "aws_instance" "Rundeckv3" {
   associate_public_ip_address = true
   instance_type               = "m4.large"
 
-  key_name = "RunDeck-Playgrounds"
+  key_name = "Rundeck-Playgrounds"
   vpc_security_group_ids = [
     aws_security_group.HTTP_SG_v3.id,
     aws_security_group.SSH_SG_v3.id,

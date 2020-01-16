@@ -3,24 +3,32 @@
 # -e  Exit immediately if a command exits with a non-zero status.
 set -e
 
-> instance.txt
+keypair_exists=$(aws ec2 describe-key-pairs \
+    | grep "Rundeck-Playgrounds" \
+    | cut -d "\"" -f 4)
+
+if [[ $keypair_exists == "Rundeck-Playgrounds" ]]; then
+    echo "Keypair found, continuing..."
+else
+    echo -e "No Keypair Found, generating one..."
+    aws ec2 create-key-pair --key-name Rundeck-Playgrounds --query 'KeyMaterial' --output text > ~/.ssh/Rundeck-Playgrounds.pem
+fi
 
 ./ami.sh
 cd ./terraform
+terraform init
 terraform fmt
 terraform validate
 terraform apply -auto-approve
 terraform output Rundeckv1_IP
 
-preinstance_id=$(aws ec2 describe-instances \
-    --filters "Name=tag:Name,Values=Rundeck Playground v1.4.4,Name=instance-state-name, Values=running" \
+instance_id=$(aws ec2 describe-instances \
+    --filters "Name=tag-value,Values=Rundeck Playground v1.4.4" "Name=instance-state-name,Values=running" "Name=instance-type,Values=m4.large" "Name=instance-state-code,Values=16" \
 	--query "Reservations[*].Instances[*].{ID:InstanceId}" \
 	--region us-east-1 \
 	| grep "i-[a0-z9]*" \
 	| cut -d "\"" -f 4)
 
-echo $preinstance_id > instance.txt
-instance_id=$(awk '{ print $2 }' instance.txt)
 sleep 45
 
 aws ssm send-command \
@@ -30,5 +38,3 @@ aws ssm send-command \
     --comment "Initiate Rundeck" \
     --region us-east-1 \
     --debug
-
-rm instance.txt -f
