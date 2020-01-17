@@ -1,3 +1,5 @@
+![rundeck-horizontal-01](https://user-images.githubusercontent.com/42847572/72653771-1293d080-3952-11ea-9b2f-7a3f64017ce2.jpg)
+
 # Rundeck_Playgrounds
 A repository that contains the IaC Code to Configure and Deploy an AWS AMI that contains Rundeck for testing purposes.
 
@@ -48,22 +50,26 @@ We need a **API** token, we can obtein it in the next way
 Login in your main page, the predeterminate credentials are:
 User:admin
 Password:admin
-
+![0](https://user-images.githubusercontent.com/42847572/72653659-926d6b00-3951-11ea-9d13-4db6273e9be5.PNG)
 
 ## 2-.  
 Once logged in, we will go to the top right of the page and click on the user image.
-
+![1](https://user-images.githubusercontent.com/42847572/72653672-a022f080-3951-11ea-9729-9ec9e2d816cf.PNG)
 ## 3-.
 Then we right click on the **"profile"** option.
-
+![2](https://user-images.githubusercontent.com/42847572/72653673-a022f080-3951-11ea-84f1-5ddfaca5541b.PNG)
 ## 4-.
 
 Onse inside, we'll select a plus image in the **"User API tokens"**.
+![3](https://user-images.githubusercontent.com/42847572/72653674-a022f080-3951-11ea-9778-332d9beafdc3.PNG)
 ## 5-.
 In this section we'll write the user, role and the expiration if is need it. Once done, we right clic in **"Generate New Token"**.
+
+![4](https://user-images.githubusercontent.com/42847572/72653675-a022f080-3951-11ea-8785-d9def1da4ffe.PNG)
 ## 6-.
 In the panel we right clic in **"Show token"**
 This will be our token to use de **API**.
+![5](https://user-images.githubusercontent.com/42847572/72653676-a0bb8700-3951-11ea-9d0f-77805efaec0d.PNG)
 
 # Using de Rundeck API
 
