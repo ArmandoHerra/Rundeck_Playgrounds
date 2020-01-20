@@ -1,0 +1,17 @@
+<joblist>
+    <job>
+        <id></id>
+        <loglevel>INFO</loglevel>
+        <sequence keepgoing='false' strategy='node-first'>
+            <command>
+                <exec>echo "Hello World"</exec>
+            </command>
+        </sequence>
+        <description></description>
+        <name>job1</name>
+        <context>
+            <project>Test-Project</project>
+        </context>
+        <uuid></uuid>
+    </job>
+</joblist>
