@@ -49,11 +49,11 @@ aws: error: the following arguments are required: command
 
 ## Rundeck v3 API
 
-### Obtaining a Rundeck Token (UI)
+## v3.2.0 - Obtaining a Rundeck Token (UI)
 
 We need an **API** token, we can obtain it by following these steps:
 
-## Step 1
+## v3.2.0 - Step 1
 
 Login in your main page, the predeterminate credentials are:
 
@@ -64,31 +64,31 @@ Password: admin
 
 ![0](https://user-images.githubusercontent.com/42847572/72653659-926d6b00-3951-11ea-9d13-4db6273e9be5.PNG)
 
-## Step 2
+## v3.2.0 - Step 2
 
 Once logged in, we will go to the top right of the page and click on the user image.
 
 ![1](https://user-images.githubusercontent.com/42847572/72653672-a022f080-3951-11ea-9729-9ec9e2d816cf.PNG)
 
-## Step 3
+## v3.2.0 - Step 3
 
 Then we right click on the **"profile"** option.
 
 ![2](https://user-images.githubusercontent.com/42847572/72653673-a022f080-3951-11ea-84f1-5ddfaca5541b.PNG)
 
-## Step 4
+## v3.2.0 - Step 4
 
 Once inside, we select the plus icon on the **"User API tokens"** section.
 
 ![3](https://user-images.githubusercontent.com/42847572/72653674-a022f080-3951-11ea-9778-332d9beafdc3.PNG)
 
-## Step 5
+## v3.2.0 - Step 5
 
 In this section we write the username to which we want to associate the token with, any roles or groups associated, and the expiration if it's needed. Once done, we click the **"Generate New Token"** button.
 
 ![4](https://user-images.githubusercontent.com/42847572/72653675-a022f080-3951-11ea-8785-d9def1da4ffe.PNG)
 
-## Step 6
+## v3.2.0 - Step 6
 
 In the panel we click on the **"Show token"** button.
 
@@ -205,7 +205,7 @@ We can use this xml configuration to deploy an example job with the command "Hel
 
 You can edit the Name of the Job, add more commands, or call scripts.
 
-#### After creating the Job we will obtain an output that looks like this:
+#### After importing the Job we will obtain an output that looks like this
 
 ```xml
 <result success='true' apiversion='34'>
@@ -242,119 +242,145 @@ $URL="Your Rundeck URL."
 $TOKEN="Your Rundeck Token."
 $JOB_ID="The Job ID obtained when you imported the XML File into Rundeck"
 ```
-# First steps before to use the Rundeck v1.4.4 API 
-We need a **API** token, we can obtein it in the next way
-## 1-. 
-Login with the predeterminate credentials.
 
-    User:admin
-    Password:admin
+---
+
+## Rundeck v1.4.4 API
+
+### Obtaining a Rundeck Token (UI)
+
+We need an **API** token, we can obtain it by following these steps:
+
+## Step 1
+
+Login with the default credentials.
+
+```sh
+User:admin
+Password:admin
+```
+
 ![0](https://user-images.githubusercontent.com/42847572/72760007-19faea00-3b9d-11ea-804c-28f353fdf535.PNG)
 
-## 2-.  
+## Step 2
+
 Once logged in, we will go to the top right of the page and click on "admin".
 
 ![1](https://user-images.githubusercontent.com/42847572/72760008-1a938080-3b9d-11ea-9076-8fafc05702b0.PNG)
-## 3-.
 
-Onse inside, we'll select a plus image in the **"Generate New Token"**.
+## Step 3
+
+Once inside, we'll select the **"Generate New Token"** button.
+
 ![2](https://user-images.githubusercontent.com/42847572/72760009-1a938080-3b9d-11ea-97a6-544cc47e8912.PNG)
-## 4-.
-In the panel we can the generated token
-This will be our token to use de **API**.
+
+## Step 4
+
+In the panel we can see the generated token, this will be the token we use to authenticate on the **API**.
+
 ![3](https://user-images.githubusercontent.com/42847572/72760010-1a938080-3b9d-11ea-8dc5-38fb72f04c8d.PNG)
-# Using de Rundeck v1.4.4 API
 
-## Create Project
+## Using de Rundeck v1.4.4 API
 
-In this version we Can´t to create a project using the API.
+### v1.4.4 - Create Project
 
+In this version we can't create a project using the API.
 
-## List the projects
+### v1.4.4 - List the projects
 
-In a terminal we can list the projects with the next command.
+In a terminal we can list the projects with the following command:
 
-        curl -vk -X POST $URL:4440/api/5/projects \
-      --header "X-Rundeck-Auth-Token: $TOKEN" \
-      --header "Content-Type: application/json" 
+```sh
+curl -vk -X POST $URL:4440/api/5/projects \
+  --header "X-Rundeck-Auth-Token: $TOKEN" \
+  --header "Content-Type: application/json"
+```
 
-  
+Where the variables equate to the following values.
+
+```sh
+$URL="Your Rundeck URL."
+$TOKEN="Your Rundeck Token obtained using the previous steps."
+```
+
+## v1.4.4 - Importing a Job with an XML file
+
+In a terminal we can create a Job with an XML file with the following command.
+
+```sh
+curl -vk -L $URL:4440/api/5/jobs/import  \
+  --header "X-Rundeck-Auth-Token: $TOKEN" \
+  -F xmlBatch=@"$FILENAME"
+```
+
 With the following values:
 
-$URL=Your Rundeck url.
-$TOKEN=Your Rundeck token obteined in the defore steps.
+Where the variables equate to the following values.
 
-## Create Job with a XML file
+```sh
+$URL="Your Rundeck URL."
+$TOKEN="Your Rundeck Token."
+$FILENAME="The name of your file with the configuration to create the Job."
+```
 
-In a terminal we can create a Job with a XML file with the next command.
+### We can use this xml configuration to deploy an example job with the command "Hello World"
 
-        curl -vk -L $URL:4440/api/5/jobs/import  \
-        --header "X-Rundeck-Auth-Token: $TOKEN" \
-        -F xmlBatch=@"$FILENAME" 
+```xml
+<joblist>
+  <job>
+    <id></id>
+    <loglevel>INFO</loglevel>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>echo "Hello World"</exec>
+      </command>
+    </sequence>
+    <description></description>
+    <name>job1</name>
+    <context>
+      <project>Test-Project</project>
+    </context>
+    <uuid></uuid>
+  </job>
+</joblist>
+```
 
-With the following values:
+You can edit the Name of the Job, add more commands, or call scripts.
 
-$URL=Your Rundeck url.
-$TOKEN=Your Rundeck token obteined in the defore steps.
-$FILENAME=The name of your file with the configuration to create the Job.
+#### v1.4.4 - After importing the Job we will obtain an output that looks like this
 
-### We can use this xml configuration to deploy a job with the command "Hello World".
+```xml
+<result success='true' apiversion='5'>
+  <succeeded count='1'>
+    <job index='1'>
+      <id>2dfbea96-8eb9-46f3-a185-fd716eb9d6c8</id>
+      <name>job1</name>
+      <group></group>
+      <project>ONE</project>
+      <url>/job/show/2dfbea96-8eb9-46f3-a185-fd716eb9d6c8</url>
+    </job>
+  </succeeded>
+  <failed count='0'></failed>
+  <skipped count='0'></skipped>
+</result>
+```
 
-        <joblist>
-      <job>
-        <id></id>
-        <loglevel>INFO</loglevel>
-        <sequence keepgoing='false' strategy='node-first'>
-          <command>
-            <exec>echo "Hello World"</exec>
-          </command>
-        </sequence>
-        <description></description>
-        <name>job1</name>
-        <context>
-          <project>ONE</project>
-        </context>
-        <uuid></uuid>
-      </job>
-    </joblist>
-
-You can edit the Name of the Job or add more commands or call scripts.
-
-### After to create the Job we'll obtein a output like this:
-
-        *   Trying 3.81.117.30...
-    * TCP_NODELAY set
-    * Connected to 3.81.117.30 (3.81.117.30) port 4440 (#0)
-    > POST /api/5/jobs/import HTTP/1.1
-    > Host: 3.81.117.30:4440
-    > User-Agent: curl/7.61.1
-    > Accept: */*
-    > X-Rundeck-Auth-Token: D2Dc1sDp2ucK56ve06dNo6K09dE6d96D
-    > Content-Length: 548
-    > Content-Type: multipart/form-data; boundary=------------------------7bd6cf9db04e5a16
-    >
-    < HTTP/1.1 200 OK
-    < Expires: Thu, 01 Jan 1970 00:00:00 GMT
-    < Set-Cookie: JSESSIONID=vawgvkn6knfj;Path=/
-    < Content-Type: text/xml; charset=utf-8
-    < Transfer-Encoding: chunked
-    < Server: Jetty(6.1.21)
-    <
-    * Connection #0 to host 3.81.117.30 left intact
-    <result success='true' apiversion='5'><succeeded count='1'><job index='1'><id>2dfbea96-8eb9-46f3-a185-fd716eb9d6c8</id><name>job1</name><group></group><project>ONE</project><url>/job/show/2dfbea96-8eb9-46f3-a185-fd716eb9d6c8</url></job></succeeded><failed count='0'></failed><skipped count='0'></skipped></result>
-
-In this output we can see an **"id"**, this one we need it to run the Job.
+In this output we can see an **"id"**, this is the ID of the job we just imported into Rundeck, we need it to run the Job after importing it.
 
 ## Run the Job
 
-In a terminal we can run the Job  with the next command.
+### v1.4.4 - Running the example Job
 
-        curl -vk -X POST $URL:4440/api/1/job/$JOBID/run \
-      --header "X-Rundeck-Auth-Token: $TOKEN" \
-      --header "Content-Type:text/xml"
+```sh
+curl -vk -X POST $URL:4440/api/1/job/$JOB_ID/run \
+  --header "X-Rundeck-Auth-Token: $TOKEN" \
+  --header "Content-Type:text/xml"
+```
 
-With the following values:
+Where the variables equate to the following values.
 
-$URL=Your Rundeck url.
-$TOKEN=Your Rundeck token obteined in the defore steps.
-$JOBID=Your job id that you obtein in the before step.
+```sh
+$URL="Your Rundeck URL."
+$TOKEN="Your Rundeck Token."
+$JOB_ID="The Job ID obtained when you imported the XML File into Rundeck"
+```
