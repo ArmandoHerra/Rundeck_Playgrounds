@@ -387,7 +387,7 @@ $JOB_ID="The Job ID obtained when you imported the XML File into Rundeck"
 
 # Additional features
 
-If you have problems related to roles and profiles when deploying the machine, just run the folowing commands in your terminal.
+If you have problems related to roles and profiles when deploying the machine, just run the following commands in your terminal.
 
 ## Delete Instance profile 
 
