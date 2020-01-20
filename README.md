@@ -47,7 +47,9 @@ aws: error: the following arguments are required: command
 
 ---
 
-## Rundeck v3 API (UI)
+## Rundeck v3 API
+
+### Obtaining a Rundeck Token (UI)
 
 We need an **API** token, we can obtain it by following these steps:
 
@@ -94,7 +96,31 @@ This will be our token to use de **API**.
 
 ![5](https://user-images.githubusercontent.com/42847572/72653676-a0bb8700-3951-11ea-9d0f-77805efaec0d.PNG)
 
-## Using de Rundeck API
+<!-- ### Obtaining a Rundeck Token (API)
+
+First we have to authenticate on the server before we can start generating our Rundeck Token for further access to the Rundeck API.
+
+```sh
+curl -vk -X POST $URL:4440/j_security_check?j_username=admin&j_password=admin
+```
+
+Example:
+
+```sh
+curl -vk -L -X POST 'http://54.86.172.29:4440/j_security_check?j_username=admin&j_password=admin'
+```
+
+Once authenticated we can now request an API Token
+
+```sh
+curl -vk $URL:4440/api/11/tokens/admin
+```
+
+Example:
+
+```sh
+curl -vk http://54.86.172.29:4440/api/11/tokens/admin -b JSESSIONID=node01ivdpsma4f9jn13awiucidocd350.node0;
+``` -->
 
 ### Create Project
 
