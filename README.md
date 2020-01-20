@@ -384,3 +384,19 @@ $URL="Your Rundeck URL."
 $TOKEN="Your Rundeck Token."
 $JOB_ID="The Job ID obtained when you imported the XML File into Rundeck"
 ```
+
+# Additional features
+
+If you have problems related to roles and profiles when deploying the machine, just run the folowing commands in your terminal.
+
+## Delete Instance profile 
+
+    aws iam delete-instance-profile --instance-profile-name SSM_Profile
+
+## Delete instance_role
+
+    aws iam delete-role --role-name instance_role
+
+## Delete AssumeRole
+
+    aws iam delete-role --role-name AssumeRole
