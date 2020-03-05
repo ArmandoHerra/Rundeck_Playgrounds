@@ -1,17 +1,21 @@
 #!/bin/bash -x
 
-# -e  Exit immediately if a command exits with a non-zero status.
-set -e
+clear
 
-keypair_exists=$(aws ec2 describe-key-pairs \
-    | grep "Rundeck-Playgrounds" \
-    | cut -d "\"" -f 4)
-
-if [[ $keypair_exists == "Rundeck-Playgrounds" ]]; then
-    echo "Keypair found, continuing..."
+aws ec2 describe-key-pairs > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    keypair_exists=$(aws ec2 describe-key-pairs \
+        | grep "Rundeck-Playgrounds" \
+        | cut -d "\"" -f 4)
+    if [[ $keypair_exists == "Rundeck-Playgrounds" ]]; then
+        echo "Keypair found, continuing..."
+    else
+        echo -e "No Keypair Found, generating one..."
+        aws ec2 create-key-pair --key-name Rundeck-Playgrounds --query 'KeyMaterial' --output text > ~/.ssh/Rundeck-Playgrounds.pem
+    fi
 else
-    echo -e "No Keypair Found, generating one..."
-    aws ec2 create-key-pair --key-name Rundeck-Playgrounds --query 'KeyMaterial' --output text > ~/.ssh/Rundeck-Playgrounds.pem
+    echo "There is a problem with your AWS CLI Keys, please check them before continuing"
+    exit 1
 fi
 
 ./ami.sh

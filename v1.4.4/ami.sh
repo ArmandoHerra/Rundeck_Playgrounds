@@ -28,17 +28,17 @@ function clean_ami () {
 
 function clean_snapshot () {
     echo -e "~~~~~ Removing previous AMI Snapshot ~~~~~\n"
-
+    
     # Lookup the AMI Snapshot
     SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v1.4.4" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1)
-    if [ $SnapshotExists != [] ]; then
+    echo "Snapshot: ${SnapshotExists[@]}"
+    if [ "${SnapshotExists[@]}" != "[]" ]; then
         snapID=$(aws ec2 describe-snapshots \
             --filters "Name=tag:Project,Values=Rundeck v1.4.4" \
             --query "Snapshots[*].{ID:SnapshotId}" \
             --region us-east-1 \
             | grep 'snap-[a0-z9]*' \
             | cut -d "\"" -f 4)
-        # Delete AMI Snapshot
         aws ec2 delete-snapshot --snapshot-id $snapID --region us-east-1
     else
         echo -e "No Snapshots found, skipping step.\n"
@@ -66,6 +66,7 @@ function build_rundeckv1_ami () {
             RUNDECKV1_AMI_ID=$(tail -2 packer/logs/rundeckv1_ami_output.log | grep 'ami-[a0-z9]*' | cut -d " " -f 2)
             if [[ $RUNDECKV1_AMI_ID == "" ]]; then
                 echo -e "Errors occurred while building the Rundeckv1 Packer Image, please check the logs."
+                exit 1
             else
                 echo $RUNDECKV1_AMI_ID > packer/logs/RUNDECKV1_AMI_ID.log
                 echo

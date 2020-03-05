@@ -1,56 +1,55 @@
 {
-    "builders": [
+  "builders": [
+    {
+      "ami_name": "Rundeck-v1.4.4-{{isotime | clean_resource_name}}",
+      "instance_type": "m4.large",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "name": "CentOS Linux 7 x86_64 HVM EBS *",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm",
+          "description": "CentOS Linux 7 x86_64 HVM EBS ENA 1901_01"
+        },
+        "most_recent": true,
+        "owners": ["679593333241"]
+      },
+      "ssh_username": "centos",
+      "tags": {
+        "Base_AMI_Name": "{{ .SourceAMIName }}",
+        "OS_Version": "CentOS 7",
+        "Project": "Rundeck v1.4.4",
+        "Release": "Latest"
+      },
+      "type": "amazon-ebs",
+      "launch_block_device_mappings": [
         {
-            "ami_name": "Rundeck-v1.4.4-{{isotime | clean_resource_name}}",
-            "instance_type": "m4.large",
-            "region": "us-east-1",
-            "source_ami_filter": {
-                "filters": {
-                    "name": "CentOS Linux 7 x86_64 HVM EBS *",
-                    "root-device-type": "ebs",
-                    "virtualization-type": "hvm"
-                },
-                "most_recent": true,
-                "owners": [
-                    "679593333241"
-                ]
-            },
-            "ssh_username": "centos",
-            "tags": {
-                "Base_AMI_Name": "{{ .SourceAMIName }}",
-                "OS_Version": "CentOS 7",
-                "Project": "Rundeck v1.4.4",
-                "Release": "Latest"
-            },
-            "type": "amazon-ebs",
-            "launch_block_device_mappings": [
-                {
-                    "device_name": "/dev/sda1",
-                    "volume_size": 100,
-                    "volume_type": "gp2",
-                    "delete_on_termination": true
-                }
-            ]
+          "device_name": "/dev/sda1",
+          "volume_size": 100,
+          "volume_type": "gp2",
+          "delete_on_termination": true
         }
-    ],
-    "provisioners": [
-        {
-            "inline": [
-                "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
-            ],
-            "type": "shell"
-        },
-        {
-            "script": "packer/scripts/bash/install-base.sh",
-            "type": "shell"
-        },
-        {
-            "script": "packer/scripts/bash/install-java.sh",
-            "type": "shell"
-        },
-        {
-            "script": "packer/scripts/bash/install-rundeck.sh",
-            "type": "shell"
-        }
-    ]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+      ],
+      "type": "shell"
+    },
+    {
+      "script": "packer/scripts/bash/install-base.sh",
+      "type": "shell"
+    },
+    {
+      "script": "packer/scripts/bash/install-java.sh",
+      "type": "shell"
+    },
+    {
+      "script": "packer/scripts/bash/install-rundeck.sh",
+      "type": "shell"
+    }
+  ]
 }
