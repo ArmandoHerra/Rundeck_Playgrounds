@@ -31,7 +31,6 @@ function clean_snapshot () {
     
     # Lookup the AMI Snapshot
     SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v1.4.4" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1)
-    echo "Snapshot: ${SnapshotExists[@]}"
     if [ "${SnapshotExists[@]}" != "[]" ]; then
         snapID=$(aws ec2 describe-snapshots \
             --filters "Name=tag:Project,Values=Rundeck v1.4.4" \

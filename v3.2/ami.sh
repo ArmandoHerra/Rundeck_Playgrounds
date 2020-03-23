@@ -30,10 +30,10 @@ function clean_snapshot () {
     echo -e "~~~~~ Removing previous AMI Snapshot ~~~~~\n"
 
     # Lookup the AMI Snapshot
-    SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.0" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1)
-    if [ $SnapshotExists != [] ]; then
+    SnapshotExists=$(aws ec2 describe-snapshots --filters "Name=tag:Project,Values=Rundeck v3.2.4" --query "Snapshots[*].{ID:SnapshotId}" --region us-east-1)
+    if [ "${SnapshotExists[@]}" != "[]" ]; then
         snapID=$(aws ec2 describe-snapshots \
-            --filters "Name=tag:Project,Values=Rundeck v3.2.0" \
+            --filters "Name=tag:Project,Values=Rundeck v3.2.4" \
             --query "Snapshots[*].{ID:SnapshotId}" \
             --region us-east-1 \
             | grep 'snap-[a0-z9]*' \
@@ -47,7 +47,7 @@ function clean_snapshot () {
 
 function build_rundeckv3_ami () {
     echo -e "~~~~~ Validating Rundeckv3 Packer Template ~~~~~ \n"
-    rundeckv3_Valid=$(packer validate packer/rundeck-v3.2.0.json)
+    rundeckv3_Valid=$(packer validate packer/rundeck-v3.2.json)
     
     if [[ $rundeckv3_Valid == "Template validated successfully." ]]; then
         echo -e "Rundeckv3 Template validated successfully"
@@ -55,7 +55,7 @@ function build_rundeckv3_ami () {
         if [ ! -d "packer/logs" ]; then
             mkdir packer/logs
         else
-            packer build -color=false packer/rundeck-v3.2.0.json | tee packer/logs/rundeckv3_ami_output.log
+            packer build -color=false packer/rundeck-v3.2.json | tee packer/logs/rundeckv3_ami_output.log
             rundeckv3PreExportVar=$(cat packer/logs/rundeckv3_ami_output.log | tail -n 2 \
                 | sed '$ d' \
                 | sed "s/us-east-1: /variable "\"packer_built_rundeckv3_ami"\" { default = \"/" \

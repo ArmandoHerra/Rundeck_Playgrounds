@@ -1,14 +1,15 @@
 {
     "builders": [
         {
-            "ami_name": "Rundeck-v3.2.0-{{isotime | clean_resource_name}}",
+            "ami_name": "Rundeck-v3.2.4-{{isotime | clean_resource_name}}",
             "instance_type": "m4.large",
             "region": "us-east-1",
             "source_ami_filter": {
                 "filters": {
                     "name": "CentOS Linux 7 x86_64 HVM EBS *",
                     "root-device-type": "ebs",
-                    "virtualization-type": "hvm"
+                    "virtualization-type": "hvm",
+                    "description": "CentOS Linux 7 x86_64 HVM EBS ENA 1901_01"
                 },
                 "most_recent": true,
                 "owners": [
@@ -19,7 +20,7 @@
             "tags": {
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
                 "OS_Version": "CentOS 7",
-                "Project": "Rundeck v3.2.0",
+                "Project": "Rundeck v3.2.4",
                 "Release": "Latest"
             },
             "type": "amazon-ebs",
